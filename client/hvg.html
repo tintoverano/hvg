@@ -64,17 +64,23 @@
 </template>
 
 <template name="around">
-    {{#each myPlaces}}
-        <div style="margin-top: 10px;">
-            {{nev}} - {{kedvezmeny}} - {{loc.coordinates}}
-        </div>
-    {{/each}}
+    <div class="container-fluid">
+        {{#each myPlaces}}
+            <div style="margin-top: 10px;">
+                {{nev}} - {{kedvezmeny}} - {{loc.coordinates}}
+            </div>
+        {{/each}}
+    </div>
 </template>
 
 <template name="about">
-    about ...
+    <div class="container-fluid">
+        about ...
+    </div>
 </template>
 
 <template name="loadingMap">
-    loading map ...
+    <div class="container-fluid">
+        loading map ...
+    </div>
 </template>

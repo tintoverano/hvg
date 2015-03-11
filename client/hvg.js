@@ -2,13 +2,12 @@ Session.setDefault ("slider", 2);
 //var markerClusterer = null;
 markers = [];
 myLocMarker = null;
-myLoc = {"lat": 0, "lng": 0};
-Session.setDefault ("myLoc", myLoc);
 
 Push.debug = false;
 
 Meteor.startup (function () {
-  //GoogleMaps.load ({key: Meteor.settings.public.googleMapsApiKey});
+  myLoc = {"lat": 0, "lng": 0};
+  Session.setDefault ("myLoc", myLoc);
 });
 
 Template.navItems.helpers ({
@@ -20,17 +19,13 @@ Template.navItems.helpers ({
 
 function placeMe () {
   if (GoogleMaps.loaded ()) {
-    if (myLocMarker == null) {
+      if (myLocMarker)
+        myLocMarker.setMap (null);
+      myLocMarker = null;
       myLocMarker = new google.maps.Marker ({
-        position: new google.maps.LatLng (Session.get ("myLoc").lat, Session.get ("myLoc").lng),
+        position: new google.maps.LatLng (myLoc.lat, myLoc.lng),
         map: GoogleMaps.maps.theMap.instance
       });
-      //console.log ("placeMe init: " + myLocMarker);
-    }
-    else {
-      //console.log ("placeMe update");
-      myLocMarker.setPosition (myLoc);
-    }
   };
 };
 
@@ -109,7 +104,6 @@ Number.prototype.round = function (places) {
 Template.map.helpers ({
   theMapOptions: function () {
     if (GoogleMaps.loaded ()) {
-      //console.log("mapOptions");
       return {
         center: new google.maps.LatLng (Session.get ("myLoc").lat, Session.get ("myLoc").lng),
         zoom: 15
@@ -119,7 +113,6 @@ Template.map.helpers ({
 
   aroundMe: function () {
     Session.set ("myLoc", myLoc);
-    //console.log("aroundMe");
     if (GoogleMaps.loaded ()) {
       Meteor.promise ("getCircle", Session.get ("myLoc"), Session.get ("slider") * 0.3)
         .then (placeMarkers)
@@ -139,6 +132,5 @@ Template.layout.helpers ({
         myLoc = roundedCurLoc;
       }
     }
-    //console.log("updateLoc" + myLoc);
   }
 });
