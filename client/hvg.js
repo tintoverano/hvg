@@ -1,4 +1,4 @@
-Session.setDefault ("slider", 2);
+Session.setDefault ("slider", 1);
 //var markerClusterer = null;
 markers = [];
 myLocMarker = null;
@@ -35,7 +35,7 @@ Template.map.created = function () {
 
 Template.map.rendered = function () {
   this.$ ("#slider").noUiSlider ({
-    start: 2,
+    start: 1,
     connect: "lower",
     step: 1,
     handles: 1,
@@ -64,6 +64,7 @@ function placeMarkers (aroundMe) {
   placeMe ();
 
   if (aroundMe) {
+    var i = 0;
     aroundMe.forEach (function (place) {
       var marker = new google.maps.Marker ({
         position: new google.maps.LatLng (place.loc.coordinates[1], place.loc.coordinates[0]),
@@ -72,14 +73,31 @@ function placeMarkers (aroundMe) {
         icon: new google.maps.MarkerImage ("http://maps.google.com/mapfiles/ms/icons/blue.png")
       });
 
+      var categories = "";
+      place.kategoria.split ("/").forEach (function (category) {
+        categories += '<p style="margin-top: -10px;">' + category.toLowerCase () + "</p>";
+      });
+
+      var content =
+        '<div class="infowindow">' +
+          '<p style="color:red;font-weight:bold;">' + place.kedvezmeny + '</p>' + categories +
+        '</div>';
+
       var infowindow = new google.maps.InfoWindow ({
-        content: place.kedvezmeny + " - " + place.nev[0],
+        content:  content,
         maxWidth: 90
       });
       infowindow.open (GoogleMaps.maps.theMap.instance, marker);
 
       markers.push (marker);
+
+      categories = "";
+      place.kategoria.split ("/").forEach (function (category) {
+        categories += category.toLowerCase () + " ";
+      });
+      aroundMe[i++].kategoria = categories;
     });
+    Session.set ("aroundMe", aroundMe);
   }
   return aroundMe;
 };

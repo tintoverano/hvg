@@ -65,11 +65,26 @@
 
 <template name="around">
     <div class="container-fluid">
-        {{#each myPlaces}}
-            <div style="margin-top: 10px;">
-                {{nev}} - {{kedvezmeny}} - {{loc.coordinates}}
-            </div>
-        {{/each}}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>%</th>
+                    <th>kategória</th>
+                    <th>név</th>
+                    <th>cím</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each myPlaces}}
+                    <tr>
+                        <td>{{kedvezmeny}}</td>
+                        <td>{{kategoria}}</td>
+                        <td>{{nev}}</td>
+                        <td>{{cim}}</td>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
     </div>
 </template>
 

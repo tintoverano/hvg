@@ -3,7 +3,7 @@ Meteor.methods ({
     return Places.find ({loc: {$geoWithin: {$centerSphere: [[aLoc.lng, aLoc.lat], aRadius/6378.137]}}}).fetch ();
   }
 });
-
+/*
 Meteor.startup (function () {
   if (Places.find ().count () === 0) {
     var url = "http://solr2.hvgklubkartya.hu/select?q=*%3A*&" +
@@ -42,3 +42,4 @@ Meteor.startup (function () {
     });
   }
 });
+*/
