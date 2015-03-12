@@ -52,8 +52,6 @@ Template.map.rendered = function () {
 };
 
 function placeMarkers (aroundMe) {
-  Session.set ("aroundMe", aroundMe);
-
   if (markers) {
     markers.forEach (function (marker) {
       marker.setMap (null);
@@ -75,17 +73,16 @@ function placeMarkers (aroundMe) {
 
       var categories = "";
       place.kategoria.split ("/").forEach (function (category) {
-        categories += '<p style="margin-top: -10px;">' + category.toLowerCase () + "</p>";
+        categories += "<br/>" + category.toLowerCase ();
       });
 
       var content =
         '<div class="infowindow">' +
-          '<p style="color:red;font-weight:bold;">' + place.kedvezmeny + '</p>' + categories +
+          '<span style="color:red;font-weight:bold;">' + place.kedvezmeny + '</span>' + categories +
         '</div>';
 
       var infowindow = new google.maps.InfoWindow ({
-        content:  content,
-        maxWidth: 90
+        content:  content
       });
       infowindow.open (GoogleMaps.maps.theMap.instance, marker);
 
@@ -97,8 +94,8 @@ function placeMarkers (aroundMe) {
       });
       aroundMe[i++].kategoria = categories;
     });
-    Session.set ("aroundMe", aroundMe);
   }
+  Session.set ("aroundMe", aroundMe);
   return aroundMe;
 };
 

@@ -24,6 +24,9 @@
         </div>
         <div id="slider"></div>
         {{aroundMe}}km
+        <div>
+            {{> categories}}
+        </div>
     </div>
 </template>
 
@@ -61,6 +64,14 @@
     <li class="{{activeIfTemplateIs 'about'}}">
         <a href="{{pathFor 'about'}}">About</a>
     </li>
+</template>
+
+<template name="categories">
+    <div class="container-fluid" style="margin-top: 6px">
+        {{#each myCategories}}
+            <input type="checkbox" id="{{this}}" checked> <span style="margin-right: 12px">{{this}}</span>
+        {{/each}}
+    </div>
 </template>
 
 <template name="around">
