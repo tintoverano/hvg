@@ -67,10 +67,12 @@
 </template>
 
 <template name="categories">
-    <div class="container-fluid" style="margin-top: 6px">
-        {{#each myCategories}}
-            <input type="checkbox" id="{{this}}" checked> <span style="margin-right: 12px">{{this}}</span>
-        {{/each}}
+    <div class="container-fluid" style="margin-top: 6px;">
+        <span style="margin-right: auto;margin-left: auto;display: table;">
+            {{#each myCategories}}
+                <i class="{{setIcon this}}"></i>
+            {{/each}}
+        </span>
     </div>
 </template>
 
@@ -89,7 +91,7 @@
                 {{#each myPlaces}}
                     <tr>
                         <td>{{kedvezmeny}}</td>
-                        <td>{{kategoria}}</td>
+                        <td><i class="{{setIcon kategoria}}"></i></td>
                         <td>{{nev}}</td>
                         <td>{{cim}}</td>
                     </tr>
