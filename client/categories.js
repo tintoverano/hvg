@@ -31,3 +31,21 @@ Template.categories.helpers ({
     return category.icon;
   }
 });
+
+Template.categories.events ({
+  'click i': function (event) {
+    event.preventDefault ();
+
+    var mapIcon = _.findWhere (mapIcons, {icon: event.currentTarget.className});
+
+    markers.forEach( function (marker) {
+      if (marker.theCategory != mapIcon.category) {
+        if (marker.show)
+          marker.theMarker.setMap (null);
+        else
+          marker.theMarker.setMap (GoogleMaps.maps.theMap.instance);
+        marker.show = !marker.show;
+      }
+    });
+  }
+});

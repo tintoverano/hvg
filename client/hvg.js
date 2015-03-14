@@ -54,7 +54,7 @@ Template.map.rendered = function () {
 function placeMarkers (aroundMe) {
   if (markers) {
     markers.forEach (function (marker) {
-      marker.setMap (null);
+      marker.theMarker.setMap (null);
     });
   }
   markers = [];
@@ -86,13 +86,15 @@ function placeMarkers (aroundMe) {
       });
       infowindow.open (GoogleMaps.maps.theMap.instance, marker);
 
-      markers.push (marker);
-
       categories = "";
       place.kategoria.split ("/").forEach (function (category) {
         categories += category.toLowerCase () + " ";
       });
       aroundMe[i++].kategoria = categories;
+
+      var fullMarker = {theMarker: marker, theCategory: categories, show: true};
+
+      markers.push (fullMarker);
     });
   }
   Session.set ("aroundMe", aroundMe);
@@ -107,7 +109,7 @@ function autoCenter () {
   var bounds = new google.maps.LatLngBounds ();
   bounds.extend (new google.maps.LatLng (myLoc.lat, myLoc.lng));
   markers.forEach (function (marker) {
-    bounds.extend (marker.position);
+    bounds.extend (marker.theMarker.position);
   });
   GoogleMaps.maps.theMap.instance.fitBounds (bounds);
 };
