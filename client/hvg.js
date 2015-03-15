@@ -26,8 +26,8 @@ function placeMe () {
         position: new google.maps.LatLng (myLoc.lat, myLoc.lng),
         map: GoogleMaps.maps.theMap.instance
       });
-  };
-};
+  }
+}
 
 Template.map.created = function () {
   placeMe ();
@@ -117,11 +117,11 @@ function placeMarkers (aroundMe) {
   }
   Session.set ("aroundMe", aroundMe);
   return aroundMe;
-};
+}
 
 function getCircle (aLoc, aSlider) {
   return Meteor.promise ("getCircle", aLoc, aSlider);
-};
+}
 
 function autoCenter () {
   var bounds = new google.maps.LatLngBounds ();
@@ -130,7 +130,7 @@ function autoCenter () {
     bounds.extend (marker.theMarker.position);
   });
   GoogleMaps.maps.theMap.instance.fitBounds (bounds);
-};
+}
 
 Number.prototype.round = function (places) {
   return +(Math.round (this + "e+" + places)  + "e-" + places);

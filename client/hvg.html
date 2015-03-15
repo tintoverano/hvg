@@ -68,12 +68,14 @@
 
 <template name="categories">
     <div class="container-fluid">
-        <span style="margin-right: auto;margin-left: auto;display: table;">
-            {{#each myCategories}}
-                <!--a class="btn" href="{{showHideMarkers this}}"-->
-                    <i id="{{setId this}}" class="{{setIcon this}}"></i>
-                <!--/a-->
-            {{/each}}
+        <span class="categories" style="margin-right: auto;margin-left: auto;display: table;">
+            <div class="row">
+                <div class="col-sm-12">
+                    {{#each myCategories}}
+                        <i id="{{setId this}}" class="{{setIcon this}}"></i>
+                    {{/each}}
+                </div>
+            </div>
         </span>
     </div>
 </template>
