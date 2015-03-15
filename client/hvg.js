@@ -35,7 +35,7 @@ Template.map.created = function () {
 
 Template.map.rendered = function () {
   this.$ ("#slider").noUiSlider ({
-    start: 1,
+    start: Session.get ("slider"),
     connect: "lower",
     step: 1,
     handles: 1,
@@ -63,6 +63,9 @@ function placeMarkers (aroundMe) {
 
   if (aroundMe) {
     var i = 0;
+    var categoryExists = false;
+    var theCategory = Session.get ("category");
+
     aroundMe.forEach (function (place) {
       var marker = new google.maps.Marker ({
         position: new google.maps.LatLng (place.loc.coordinates[1], place.loc.coordinates[0]),
@@ -76,25 +79,40 @@ function placeMarkers (aroundMe) {
         categories += "<br/>" + category.toLowerCase ();
       });
 
-      var content =
-        '<div class="infowindow">' +
-          '<span style="color:red;font-weight:bold;">' + place.kedvezmeny + '</span>' + categories +
+      var content = '<div class="infowindow">' +
+        '<span style="color:red;font-weight:bold;">' + place.kedvezmeny + '</span>' + categories +
         '</div>';
 
       var infowindow = new google.maps.InfoWindow ({
-        content:  content
+        content: content
       });
       infowindow.open (GoogleMaps.maps.theMap.instance, marker);
 
-      categories = "";
+      var categoryStr = "";
       place.kategoria.split ("/").forEach (function (category) {
-        categories += category.toLowerCase () + " ";
+        categoryStr += category.toLowerCase () + " ";
       });
-      aroundMe[i++].kategoria = categories;
 
-      var fullMarker = {theMarker: marker, theCategory: categories, show: true};
+      aroundMe[i++].kategoria = categoryStr;
+
+      var fullMarker = {theMarker: marker, theCategory: categoryStr};
 
       markers.push (fullMarker);
+
+      if (categoryStr == theCategory)
+        categoryExists = true;
+    });
+
+    if (!categoryExists && markers.length != 0) {
+      theCategory = "";
+      Session.set ("category", "");
+    }
+
+    markers.forEach (function (marker) {
+      if (theCategory == "" || marker.theCategory == theCategory)
+        marker.theMarker.setMap (GoogleMaps.maps.theMap.instance);
+      else
+        marker.theMarker.setMap (null);
     });
   }
   Session.set ("aroundMe", aroundMe);

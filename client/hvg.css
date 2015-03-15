@@ -27,3 +27,7 @@ i {
 td i {
     font-size: 18px;
 }
+
+i#selectedCategory {
+    color: blue;
+}
