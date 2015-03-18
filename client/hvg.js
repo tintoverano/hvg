@@ -1,4 +1,3 @@
-
 Push.debug = false;
 
 Meteor.startup (function () {
@@ -14,6 +13,25 @@ Template.navItems.helpers ({
 });
 
 Template.layout.helpers ({
+  loadMarkerLabel: function () {
+    if (GoogleMaps.loaded ())
+      IRLibLoader.load (
+        "http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerwithlabel/src/markerwithlabel.js",
+        {
+          success: function () {
+            var slider = Session.get("slider");
+            if (slider === 1)
+              slider = 0;
+            Session.set ("slider", slider);
+          },
+
+          error: function () {
+            console.log ('ERROR CALLBACK');
+          }
+        }
+      );
+  },
+
   updateLoc: function () {
     var curLoc = Geolocation.latLng ();
     if (curLoc) {

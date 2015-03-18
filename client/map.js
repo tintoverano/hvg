@@ -1,8 +1,7 @@
-Session.setDefault ("slider", 1);
+Session.setDefault ("slider", 0);
 //var markerClusterer = null;
 markers = [];
 myLocMarker = null;
-
 
 function placeMe () {
   if (GoogleMaps.loaded ()) {
@@ -54,37 +53,52 @@ function placeMarkers (aroundMe) {
     var theCategory = Session.get ("category");
 
     aroundMe.forEach (function (place) {
-      var marker = new google.maps.Marker ({
-        position: new google.maps.LatLng (place.loc.coordinates[1], place.loc.coordinates[0]),
-        map: GoogleMaps.maps.theMap.instance,
-        animation: google.maps.Animation.DROP,
-        icon: new google.maps.MarkerImage ("http://maps.google.com/mapfiles/ms/icons/blue.png")
-      });
-
-      var categories = "";
-      place.kategoria.split ("/").forEach (function (category) {
-        categories += "<br/>" + category.toLowerCase ();
-      });
-
-      var content = '<div class="infowindow">' +
-        '<span style="color:red;font-weight:bold;">' + place.kedvezmeny + '</span>' + categories +
-        '</div>';
-
-      var infowindow = new google.maps.InfoWindow ({
-        content: content
-      });
-      infowindow.open (GoogleMaps.maps.theMap.instance, marker);
 
       var categoryStr = "";
       place.kategoria.split ("/").forEach (function (category) {
         categoryStr += category.toLowerCase () + " ";
       });
 
+      var mapIcon = _.findWhere (mapIcons, {category: categoryStr}).icon;
+
+      var content = '<div style="font-weight: bold;margin-left:-10px">' +
+        place.kedvezmeny +
+        '</div><div><i class="' +
+        mapIcon +
+        '" style="color:blue"></i></div>';
+
+      var marker = new MarkerWithLabel ({
+        position: new google.maps.LatLng (place.loc.coordinates[1], place.loc.coordinates[0]),
+        map: GoogleMaps.maps.theMap.instance,
+        animation: google.maps.Animation.DROP,
+        icon: ' ',
+        labelContent: content,
+        labelAnchor: new google.maps.Point(20, 40),
+        labelClass: 'marker-label'
+
+      });
+/*
+      var categories = "";
+      place.kategoria.split ("/").forEach (function (category) {
+        categories += "<br/>" + category.toLowerCase ();
+      });
+
+      content = '<div class="infowindow">' +
+        '<span style="color:red;font-weight:bold;">' + place.kedvezmeny + '</span>' + categories +
+        '</div>';
+*/
+      var infowindow = new google.maps.InfoWindow ({
+        content: place.nev[0]
+      });
+      //infowindow.open (GoogleMaps.maps.theMap.instance, marker);
+
+      google.maps.event.addListener (marker, "click", function (e) {
+        infowindow.open (GoogleMaps.maps.theMap.instance, this);
+      });
+
       aroundMe[i++].kategoria = categoryStr;
 
-      var fullMarker = {theMarker: marker, theCategory: categoryStr};
-
-      markers.push (fullMarker);
+      markers.push ({theMarker: marker, theCategory: categoryStr});
 
       if (categoryStr == theCategory)
         categoryExists = true;
@@ -136,7 +150,8 @@ Template.map.helpers ({
   aroundMe: function () {
     Session.set ("myLoc", myLoc);
     if (GoogleMaps.loaded ()) {
-      Meteor.promise ("getCircle", Session.get ("myLoc"), Session.get ("slider") * 0.3)
+      var slider = Session.get ("slider");
+      Meteor.promise ("getCircle", Session.get ("myLoc"), slider * 0.3)
         .then (placeMarkers)
         .done (function (aroundMe) {autoCenter ();})
         .fail (function (err) {console.error ("Bad", err);})
