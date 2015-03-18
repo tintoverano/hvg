@@ -10,7 +10,10 @@ mapIcons = [
   {category: "utazás ", icon: "map-icon-travel-agency"},
   {category: "bútor lakberendezés ", icon: "map-icon-furniture-store"},
   {category: "könyv zenemű ", icon: "map-icon-book-store"},
-  {category: "kert virág ", icon: "map-icon-florist"}
+  {category: "kert virág ", icon: "map-icon-florist"},
+  {category: "optika fotó ", icon: "map-icon-point-of-interest"},
+  {category: "informatika ", icon: "map-icon-movie-rental"},
+  {category: "magánszálláshelyek ", icon: "map-icon-lodging"}
 ];
 
 Session.setDefault ("category", "");

@@ -59,6 +59,7 @@ function placeMarkers (aroundMe) {
         categoryStr += category.toLowerCase () + " ";
       });
 
+      console.log(categoryStr);
       var mapIcon = _.findWhere (mapIcons, {category: categoryStr}).icon;
 
       var content = '<div style="font-weight: bold;margin-left:-10px">' +
