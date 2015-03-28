@@ -60,11 +60,19 @@ Template.categories.events ({
 
     var mapIcon = _.findWhere (mapIcons, {icon: event.currentTarget.className});
 
-    markers.forEach( function (marker) {
-      if (marker.theCategory == mapIcon.category || !newCategory)
+    markers.forEach (function (marker) {
+      if (marker.theCategory == mapIcon.category || !newCategory) {
         marker.theMarker.setMap (GoogleMaps.maps.theMap.instance);
-      else
+        /*if (marker.theCategory == mapIcon.category) {
+          google.maps.event.trigger (marker.theMarker, 'click');
+        }
+        else
+          marker.theMarker.infowindow.close ();*/
+      }
+      else {
+        //google.maps.event.trigger (marker.theMarker.infowindow, "closeclick");
         marker.theMarker.setMap (null);
+      }
     });
 
     Session.set ("category", newCategory ? mapIcon.category : "");

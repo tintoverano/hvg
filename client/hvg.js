@@ -12,6 +12,15 @@ Template.navItems.helpers ({
   }
 });
 
+Template.nav.events ({
+  'click .navbar li a': function (e) {
+    var navbar = $('.navbar-toggle');
+    if (navbar && typeof (navbar) !== 'undefined') {
+      navbar.click();
+    }
+  }
+});
+
 Template.layout.helpers ({
   loadMarkerLabel: function () {
     if (GoogleMaps.loaded ())

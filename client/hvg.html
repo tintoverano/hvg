@@ -62,6 +62,9 @@
     <li class="{{activeIfTemplateIs 'around'}}">
         <a href="{{pathFor 'around'}}">Places</a>
     </li>
+    <li class="{{activeIfTemplateIs 'login'}}">
+        <a href="{{pathFor 'login'}}">Login</a>
+    </li>
     <li class="{{activeIfTemplateIs 'about'}}">
         <a href="{{pathFor 'about'}}">About</a>
     </li>
@@ -115,5 +118,17 @@
 <template name="loadingMap">
     <div class="container-fluid">
         loading map ...
+    </div>
+</template>
+
+<template name="login">
+    <div class="container-fluid">
+        {{#if currentUser}}
+            {{currentUser.profile.name}}
+            <!--{{currentUser.services.facebook.gender}}-->
+            <button id="logout" class="btn btn-default">Logout</button>
+        {{else}}
+            <button id="facebook-login" class="btn btn-default">Login with Facebook</button>
+        {{/if}}
     </div>
 </template>
