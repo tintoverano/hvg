@@ -9,7 +9,6 @@ dburles:google-maps
 mdg:geolocation
 iron:router
 rcy:nouislider
-deanius:promise
 ian:bootstrap-3
 raix:push
 meteorhacks:subs-manager
@@ -17,3 +16,4 @@ underscore
 manuelschoebel:wait-on-lib
 accounts-facebook
 service-configuration
+deanius:promise

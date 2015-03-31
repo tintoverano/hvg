@@ -4,20 +4,32 @@ markers = [];
 myLocMarker = null;
 
 function placeMe () {
-  if (GoogleMaps.loaded ()) {
+  GoogleMaps.ready ('theMap', function (map) {
+  //if (GoogleMaps.loaded ()) {
     if (myLocMarker)
       myLocMarker.setMap (null);
     myLocMarker = null;
     myLocMarker = new google.maps.Marker ({
       position: new google.maps.LatLng (myLoc.lat, myLoc.lng),
-      map: GoogleMaps.maps.theMap.instance
+      map: map.instance
     });
-  }
+  });
 }
 
-Template.map.created = function () {
+function showMarkers (aCategory) {
+  GoogleMaps.ready ('theMap', function (map) {
+    markers.forEach (function (marker) {
+      if (aCategory == "" || marker.theCategory == aCategory)
+        marker.theMarker.setMap (map.instance);
+      else
+        marker.theMarker.setMap (null);
+    });
+  });
+}
+
+Template.map.onCreated (function () {
   placeMe ();
-};
+});
 
 Template.map.rendered = function () {
   this.$ ("#slider").noUiSlider ({
@@ -44,8 +56,6 @@ function placeMarkers (aroundMe) {
     });
   }
   markers = [];
-
-  placeMe ();
 
   if (aroundMe) {
     var i = 0;
@@ -111,13 +121,9 @@ function placeMarkers (aroundMe) {
       Session.set ("category", "");
     }
 
-    markers.forEach (function (marker) {
-      if (theCategory == "" || marker.theCategory == theCategory)
-        marker.theMarker.setMap (GoogleMaps.maps.theMap.instance);
-      else
-        marker.theMarker.setMap (null);
-    });
+    showMarkers (theCategory);
   }
+  placeMe ();
   Session.set ("aroundMe", aroundMe);
   return aroundMe;
 }
@@ -155,7 +161,7 @@ Template.map.helpers ({
       var slider = Session.get ("slider");
       Meteor.promise ("getCircle", Session.get ("myLoc"), slider * 0.3)
         .then (placeMarkers)
-        .done (function (aroundMe) {autoCenter ();})
+        .done (function () {autoCenter ();})
         .fail (function (err) {console.error ("Bad", err);})
     }
     return (Session.get ("slider") * 0.3).toFixed (1);

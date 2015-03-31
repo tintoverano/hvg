@@ -59,6 +59,9 @@
 </template>
 
 <template name='navItems'>
+    <li class="{{activeIfTemplateIs 'map'}}">
+        <a href="{{pathFor 'map'}}">Map</a>
+    </li>
     <li class="{{activeIfTemplateIs 'around'}}">
         <a href="{{pathFor 'around'}}">Places</a>
     </li>
